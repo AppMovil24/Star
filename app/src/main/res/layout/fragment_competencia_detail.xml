@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/competencia_detail_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.appmovil24.starproyect.activity.feed.Feed"
+    tools:ignore="MergeRootFrame">
+
+    <TextView
+        android:id="@+id/competencia_detail"
+        style="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/container_horizontal_margin"
+        android:paddingTop="16dp"
+        android:paddingEnd="@dimen/container_horizontal_margin"
+        android:paddingBottom="16dp"
+        android:textIsSelectable="true"
+        tools:context="com.appmovil24.starproyect.competenciaDetailFragment" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

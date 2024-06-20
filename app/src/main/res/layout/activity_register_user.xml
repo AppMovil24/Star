@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/etUsuarioId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Usuario ID" />
+
+    <EditText
+        android:id="@+id/etNombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre" />
+
+    <EditText
+        android:id="@+id/etApellido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Apellido" />
+
+    <CheckBox
+        android:id="@+id/cbCompetidor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Competidor" />
+
+    <CheckBox
+        android:id="@+id/cbFiscalizador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fiscalizador" />
+
+    <Spinner
+        android:id="@+id/spDisciplina"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/btnRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Registrar" />
+</LinearLayout>

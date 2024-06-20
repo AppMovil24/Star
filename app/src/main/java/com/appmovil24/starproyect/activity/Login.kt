@@ -1,15 +1,17 @@
-package com.appmovil24.starproyect
+package com.appmovil24.starproyect.activity
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.appmovil24.starproyect.model.UserAccount
+import com.appmovil24.starproyect.R
+import com.appmovil24.starproyect.activity.feed.Feed
+import com.appmovil24.starproyect.model.UserAccountDTO
+import com.appmovil24.starproyect.repository.UserAccountRepository
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -19,17 +21,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.firestore.auth.User
 import com.google.firebase.ktx.Firebase
 
 class Login : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var signInButton: SignInButton
-
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
 
@@ -57,7 +53,7 @@ class Login : AppCompatActivity(), View.OnClickListener {
         googleSignInClient = GoogleSignIn.getClient(this, signInOptions)
         auth = Firebase.auth
 
-        setContentView(R.layout.login);
+        setContentView(R.layout.activity_login);
         signInButton = findViewById<SignInButton>(R.id.sign_in_button)
         signInButton.setOnClickListener(this);
     }
@@ -81,7 +77,7 @@ class Login : AppCompatActivity(), View.OnClickListener {
                 if (task.isSuccessful) {
                     val user = auth.currentUser
                     if(user !=null)
-                        initUserInformation(user)
+                        inicioUsuario(user)
                     else {
                         Log.w(TAG, "Error al iniciar sesion : auth.currentUser = null")
                         showToast("Error al iniciar sesion.")
@@ -93,32 +89,26 @@ class Login : AppCompatActivity(), View.OnClickListener {
             }
     }
 
-    private fun initUserInformation(user: FirebaseUser) {
-        val user = Firebase.auth.currentUser
-        user?.let {
-            val userId = user.uid
-            val database = FirebaseDatabase.getInstance()
-            val myRef = database.getReference("users/$userId")
+    private fun inicioUsuario(user: FirebaseUser) {
+        val userAccountRepository = UserAccountRepository(user) // Instancia del repositorio
 
-            myRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val value = dataSnapshot.getValue(UserAccount::class.java)
-                    if (value == null) {
-                        val intent = Intent(this@Login, Register::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                        startActivity(intent)
-                    }
-                    finish()
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    // Error al leer el valor
-                    Log.w(TAG, "Failed to read value.", error.toException())
-                }
-            })
+        // Llamar al método getUser
+        userAccountRepository.get { userAccountDTO: UserAccountDTO? ->
+            if (userAccountDTO != null) {
+                // Lógica para cuando el usuario no es nulo
+                val intent = Intent(this@Login, Feed::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+                finish()
+            } else {
+                // Lógica para cuando el usuario es nulo
+                val intent = Intent(this@Login, RegisterUserForm::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+                finish()
+            }
         }
     }
-
 
     private fun showToast(message: String) {
         runOnUiThread {
