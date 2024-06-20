@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">StarProyect</string>
+    <string name="default_web_client_id">316019475338-3qukeonlisorgv83oltus3cg159togr6.apps.googleusercontent.com</string>
+    <string name="next">Continuar</string>
+    <string name="inspector">Fiscalizador</string>
+    <string name="challenger">Competidor</string>
+    <string name="logout">Logout</string>
+    <string name="publish">Publicar</string>
+    <string name="preferences">Configuracion</string>
+    <string name="save_challenge">Guardar Competencia</string>
+    <string name="image_URL">URL de la Imagen</string>
+    <string name="sport_type">Tipo de Deporte</string>
+    <string name="schedule">Hora (HH:mm)</string>
+    <string name="date">Fecha (dd/MM/yyyy)</string>
+    <string name="place">Lugar</string>
+    <string name="surname">Apellido</string>
+    <string name="name">Nombre</string>
+    <string name="concatenate_two_string">%1$s %2$s</string>
+    <string name="user_profile">Perfil</string>
+    <string name="discipline">Disiplina</string>
+    <string name="discipline_label">Disiplina: %1$s</string>
+    <string name="score_label">Puntos: %1$s</string>
+    <string name="loading">Cargando informacion ...</string>
+</resources>
