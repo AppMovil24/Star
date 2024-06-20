@@ -1,4 +1,4 @@
-package com.appmovil24.starproyect
+package com.appmovil24.starproyect.activity
 
 import android.app.Activity
 import android.content.Intent
@@ -8,8 +8,10 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.appmovil24.starproyect.Model.Usuario
-import com.appmovil24.starproyect.Repo.UserRepo
+import com.appmovil24.starproyect.R
+import com.appmovil24.starproyect.activity.feed.Feed
+import com.appmovil24.starproyect.model.UserAccountDTO
+import com.appmovil24.starproyect.repository.UserAccountRepository
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -51,7 +53,7 @@ class Login : AppCompatActivity(), View.OnClickListener {
         googleSignInClient = GoogleSignIn.getClient(this, signInOptions)
         auth = Firebase.auth
 
-        setContentView(R.layout.login);
+        setContentView(R.layout.activity_login);
         signInButton = findViewById<SignInButton>(R.id.sign_in_button)
         signInButton.setOnClickListener(this);
     }
@@ -88,19 +90,19 @@ class Login : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun inicioUsuario(user: FirebaseUser) {
-        val userRepo = UserRepo(user) // Instancia del repositorio
+        val userAccountRepository = UserAccountRepository(user) // Instancia del repositorio
 
         // Llamar al método getUser
-        userRepo.getUser { usuario: Usuario? ->
-            if (usuario != null) {
+        userAccountRepository.get { userAccountDTO: UserAccountDTO? ->
+            if (userAccountDTO != null) {
                 // Lógica para cuando el usuario no es nulo
-                val intent = Intent(this@Login, MainActivity::class.java)
+                val intent = Intent(this@Login, Feed::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
                 finish()
             } else {
                 // Lógica para cuando el usuario es nulo
-                val intent = Intent(this@Login, Register::class.java)
+                val intent = Intent(this@Login, RegisterUserForm::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
                 finish()

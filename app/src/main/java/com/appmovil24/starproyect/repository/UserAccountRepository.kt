@@ -1,28 +1,25 @@
-package com.appmovil24.starproyect.Repo
-import com.appmovil24.starproyect.Model.Usuario
+package com.appmovil24.starproyect.repository
+import com.appmovil24.starproyect.model.UserAccountDTO
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 
-class UserRepo(private val currentUser: FirebaseUser?) {
+class UserAccountRepository(private val currentFirebaseUser: FirebaseUser?) {
 
-    private val db = Firebase.firestore
-    private val usersCollection = db.collection("usuarios")
+    private val usersCollection = Firebase.firestore.collection("usuarios")
 
     // Método para obtener un usuario
-    fun getUser(onComplete: (Usuario?) -> Unit) {
-        val userEmail = currentUser?.email
+    fun get(onComplete: (UserAccountDTO?) -> Unit) {
+        val userEmail = currentFirebaseUser?.email
         if (!userEmail.isNullOrEmpty()) {
-            val userRef = usersCollection
-                .whereEqualTo("email", userEmail)
-                .limit(1)
+            val userRef = usersCollection.whereEqualTo("email", userEmail).limit(1)
 
             userRef.get()
                 .addOnSuccessListener { documents ->
                     if (documents != null && !documents.isEmpty) {
-                        val user = documents.documents[0].toObject<Usuario>()
-                        onComplete(user)
+                        val userAccountDTO = documents.documents[0].toObject<UserAccountDTO>()
+                        onComplete(userAccountDTO)
                     } else {
                         onComplete(null)
                     }
@@ -30,17 +27,16 @@ class UserRepo(private val currentUser: FirebaseUser?) {
                 .addOnFailureListener { exception ->
                     onComplete(null)
                 }
-        } else {
+        } else
             onComplete(null)
-        }
     }
 
     // Método para crear un usuario
-    fun createUser(user: Usuario, onComplete: (Boolean) -> Unit) {
-        val userEmail = currentUser?.email
+    fun add(userAccountDTO: UserAccountDTO, onComplete: (Boolean) -> Unit) {
+        val userEmail = currentFirebaseUser?.email
         if (!userEmail.isNullOrEmpty()) {
-            usersCollection.document(user.usuarioId)
-                .set(user)
+            usersCollection.document(userAccountDTO.id)
+                .set(userAccountDTO)
                 .addOnSuccessListener {
                     onComplete(true)
                 }
@@ -53,7 +49,7 @@ class UserRepo(private val currentUser: FirebaseUser?) {
     }
 
     // Método para verificar si un usuarioId está en uso
-    fun existe(usuarioId: String, onComplete: (Boolean) -> Unit) {
+    fun exists(usuarioId: String, onComplete: (Boolean) -> Unit) {
         val userRef = usersCollection.document(usuarioId)
         userRef.get()
             .addOnSuccessListener { document ->
@@ -63,6 +59,7 @@ class UserRepo(private val currentUser: FirebaseUser?) {
                 onComplete(false)
             }
     }
+
 }
 
 
