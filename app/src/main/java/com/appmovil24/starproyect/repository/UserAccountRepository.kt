@@ -9,6 +9,23 @@ class UserAccountRepository(private val currentFirebaseUser: FirebaseUser?) {
 
     private val usersCollection = Firebase.firestore.collection("usuarios")
 
+    fun get(username: String, onComplete: (UserAccountDTO?) -> Unit) {
+        val userRef = usersCollection.whereEqualTo("id", username).limit(1)
+
+        userRef.get()
+            .addOnSuccessListener { documents ->
+                if (documents != null && !documents.isEmpty) {
+                    val userAccountDTO = documents.documents[0].toObject<UserAccountDTO>()
+                    onComplete(userAccountDTO)
+                } else {
+                    onComplete(null)
+                }
+            }
+            .addOnFailureListener { exception ->
+                onComplete(null)
+            }
+    }
+
     // Método para obtener un usuario
     fun get(onComplete: (UserAccountDTO?) -> Unit) {
         val userEmail = currentFirebaseUser?.email
@@ -35,17 +52,23 @@ class UserAccountRepository(private val currentFirebaseUser: FirebaseUser?) {
     fun add(userAccountDTO: UserAccountDTO, onComplete: (Boolean) -> Unit) {
         val userEmail = currentFirebaseUser?.email
         if (!userEmail.isNullOrEmpty()) {
-            usersCollection.document(userAccountDTO.id)
-                .set(userAccountDTO)
-                .addOnSuccessListener {
-                    onComplete(true)
-                }
-                .addOnFailureListener { exception ->
-                    onComplete(false)
-                }
+            update(userAccountDTO) { success ->
+                onComplete(success)
+            }
         } else {
             onComplete(false)
         }
+    }
+
+    fun update(userAccountDTO: UserAccountDTO, onComplete: (Boolean) -> Unit) {
+       usersCollection.document(userAccountDTO.id)
+            .set(userAccountDTO)
+            .addOnSuccessListener {
+                onComplete(true)
+            }
+            .addOnFailureListener { exception ->
+                onComplete(false)
+            }
     }
 
     // Método para verificar si un usuarioId está en uso
