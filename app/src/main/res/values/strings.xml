@@ -1,24 +1,41 @@
 <resources>
+    <!-- App -->
     <string name="app_name">StarProyect</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <!-- Navigation -->
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <!-- Autenticacion con Google -->
     <string name="default_web_client_id">316019475338-3qukeonlisorgv83oltus3cg159togr6.apps.googleusercontent.com</string>
-    <string name="next">Continuar</string>
-    <string name="inspector">Fiscalizador</string>
-    <string name="challenger">Competidor</string>
-    <string name="logout">Logout</string>
+
+    <!-- Botones ABM -->
+    <string name="edit">Editar</string>
+    <string name="delete">Eliminar</string>
+        <!-- Agregar Imagen -->
+        <string name="takePhoto">Sacar foto</string>
+        <string name="galleryImage">Galeria de fotos</string>
+
+    <!-- fragment_home_detail.xml -->
+    <string name="publisher">Retador</string>
+    <string name="opponent">Oponente</string>
+    <string name="accept_challenge">Aceptar desafio</string>
+    <string name="supervisor">Fiscalizador</string>
+    <string name="supervise_challenge">Fiscalizar desafio</string>
+
+    <!-- fragment_home_list.xml -->
+    <string name="user_profile">Perfil</string>
     <string name="publish">Publicar</string>
     <string name="preferences">Configuracion</string>
-    <string name="save_challenge">Guardar Competencia</string>
-    <string name="image_URL">URL de la Imagen</string>
-    <string name="sport_type">Tipo de Deporte</string>
+
+    <!-- Concatenar strings -->
+    <string name="concatenate_two_string">%1$s %2$s</string>
+
+    <!-- activity_publish_challenge_post.xml -->
     <string name="schedule">Hora (HH:mm)</string>
     <string name="date">Fecha (dd/MM/yyyy)</string>
-    <string name="place">Lugar</string>
-    <string name="surname">Apellido</string>
-    <string name="name">Nombre</string>
-    <string name="concatenate_two_string">%1$s %2$s</string>
-    <string name="user_profile">Perfil</string>
-    <string name="discipline">Disiplina</string>
-    <string name="discipline_label">Disiplina: %1$s</string>
-    <string name="score_label">Puntos: %1$s</string>
-    <string name="loading">Cargando informacion ...</string>
+    <string name="save_challenge">Guardar Competencia</string>
+
 </resources>

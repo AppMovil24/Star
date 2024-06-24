@@ -27,11 +27,31 @@
             android:inputType="date"
             android:background="@drawable/edit_text_background" />
 
+        <EditText
+            android:id="@+id/input_schedule"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:padding="12dp"
+            android:hint= "@string/schedule"
+            android:inputType="time"
+            android:background="@drawable/edit_text_background" />
+
+        <fragment
+            android:id="@+id/challenge_location_map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            />
+
         <Button
             android:id="@+id/publish_challenge_post_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/save_challenge"
             android:padding="12dp" />
+
     </LinearLayout>
 </ScrollView>
