@@ -93,7 +93,7 @@ class competenciaListFragment : Fragment() {
             val item = values[position]
             holder.idView.text = holder.itemView.context.getString(
                 R.string.concatenate_two_string, item.discipline, item.date.toString())
-//            holder.contentView.text = ""
+           // holder.contentView.text = ""
 
             with(holder.itemView) {
                 tag = item

@@ -16,6 +16,7 @@ import com.appmovil24.starproyect.model.ChallengePostDTO
 import com.appmovil24.starproyect.model.UserAccountDTO
 import com.appmovil24.starproyect.repository.ChallengePostRepository
 import com.appmovil24.starproyect.repository.UserAccountRepository
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.launch
@@ -39,12 +40,40 @@ class PublishChallengePostForm : AppCompatActivity() {
         val disciplinesAdapter = ArrayAdapter(this, R.layout.simple_spinner_item, disciplines)
         disciplinesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.inputDiscipline.adapter = disciplinesAdapter
-
         binding.publishChallengePostButton.setOnClickListener {
             lifecycleScope.launch {
                 publishCompetition()
             }
         }
+        // Setup Bottom Navigation
+        val navView: BottomNavigationView = binding.navView
+        navView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                com.appmovil24.starproyect.R.id.navigation_preferences -> {
+                    val intent = Intent(this, Preferences::class.java)
+                    startActivity(intent)
+                    true
+
+                }
+                com.appmovil24.starproyect.R.id.navigation_publish -> {
+                    // Ya estás en la actividad de publish, no hagas nada
+                    true
+                }
+                com.appmovil24.starproyect.R.id.navigation_user_profile -> {
+                    val intent = Intent(this, UserProfile::class.java)
+                    startActivity(intent)
+                    true
+                }
+                com.appmovil24.starproyect.R.id.navigation_feed -> {
+                    val intent = Intent(this, Feed::class.java)
+                    startActivity(intent)
+                    true
+                }
+                else -> false
+            }
+        }
+        // Seleccionar el item de preferencias en el BottomNavigationView
+        navView.selectedItemId = com.appmovil24.starproyect.R.id.navigation_publish
     }
 
     suspend fun publishCompetition() {

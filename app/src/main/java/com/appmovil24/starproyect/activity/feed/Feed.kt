@@ -28,25 +28,41 @@ class Feed : AppCompatActivity() {
         setContentView(binding.root)
         val currentUser = FirebaseAuth.getInstance().currentUser
 
-        if (currentUser == null)
+        if (currentUser == null) {
             AuthenticationRepository.logIn(this)
+        }
 
-        binding.preferencesButton.setOnClickListener {
-            val intent = Intent(this, Preferences::class.java)
-            startActivity(intent)
-        }
-        binding.publishButton.setOnClickListener {
-            val intent = Intent(this, PublishChallengePostForm::class.java)
-            startActivity(intent)
-        }
-        binding.userProfileButton.setOnClickListener {
-            val intent = Intent(this, UserProfile::class.java)
-            startActivity(intent)
+        // Configuración del BottomNavigationView
+        val bottomNavigationView = binding.bottomNavigation
+        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_preferences -> {
+                    val intent = Intent(this, Preferences::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.navigation_publish -> {
+                    val intent = Intent(this, PublishChallengePostForm::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.navigation_user_profile -> {
+                    val intent = Intent(this, UserProfile::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.navigation_feed-> {
+                    val intent = Intent(this, Feed::class.java)
+                    startActivity(intent)
+                    true
+                }
+                else -> false
+            }
         }
 
         fetchCompetencias()
-
     }
+
 
     private fun fetchCompetencias() {
         GlobalScope.launch(Dispatchers.Main) {

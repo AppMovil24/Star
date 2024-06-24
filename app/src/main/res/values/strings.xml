@@ -16,9 +16,12 @@
     <string name="surname">Apellido</string>
     <string name="name">Nombre</string>
     <string name="concatenate_two_string">%1$s %2$s</string>
+    <string name="feed">Feed</string>
     <string name="user_profile">Perfil</string>
     <string name="discipline">Disiplina</string>
     <string name="discipline_label">Disiplina: %1$s</string>
     <string name="score_label">Puntos: %1$s</string>
     <string name="loading">Cargando informacion ...</string>
+    <string name="list_challenge_tittle">Listado de competencias</string>
+
 </resources>

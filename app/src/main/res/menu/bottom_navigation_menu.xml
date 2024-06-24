@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_feed"
+        android:icon="@drawable/ic_feed"
+        android:title="@string/feed" />
+    <item
+        android:id="@+id/navigation_user_profile"
+        android:icon="@drawable/ic_user_profile"
+        android:title="@string/user_profile" />
+    <item
+        android:id="@+id/navigation_publish"
+        android:icon="@drawable/ic_publish"
+        android:title="@string/publish" />
+    <item
+        android:id="@+id/navigation_preferences"
+        android:icon="@drawable/ic_preferences"
+        android:title="@string/preferences" />
+</menu>
