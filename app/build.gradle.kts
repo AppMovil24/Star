@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.appmovil24.starproyect"
-        minSdk = 29
+        minSdk = 30
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -34,7 +34,6 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
     buildFeatures {
         viewBinding = true
     }
@@ -45,61 +44,40 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.firebase.database.ktx)
-    implementation(libs.firebase.firestore)
-    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.volley)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    // Import the Firebase BoM
-    //implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
 
-    // TODO: Add the dependencies for Firebase products you want to use
-    // When using the BoM, don't specify versions in Firebase dependencies
-    //implementation("com.google.firebase:firebase-analytics")
-    // Add the dependencies for any other desired Firebase products
-    // https://firebase.google.com/docs/android/setup#available-libraries
-
-    //--------------------------------------------------------------
-    // implementation("androidx.credentials:credentials:<latest version>")
-    // implementation("androidx.credentials:credentials-play-services-auth:<latest version>")
-    // implementation("com.google.android.libraries.identity.googleid:googleid:<latest version>")
-    // implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    // implementation("androidx.appcompat:appcompat:1.6.1")
-    // implementation("androidx.browser:browser:1.0.0")
-    // implementation("androidx.cardview:cardview:1.0.0")
-    // implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    // implementation("com.google.android.material:material:1.9.0")
-    // implementation("androidx.activity:activity-ktx:1.7.2")
-
-    // Import the BoM for the Firebase platform
-    // implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
-
-    // Add the dependency for the Firebase Authentication library
-    // When using the BoM, you don't specify versions in Firebase library dependencies
-    // implementation("com.google.firebase:firebase-auth-ktx")
-
-    // [START gradle_firebase_ui_auth]
-    // implementation("com.firebaseui:firebase-ui-auth:8.0.2")
-
-    // Required only if Facebook login support is required
-    // Find the latest Facebook SDK releases here: https://goo.gl/Ce5L94
-    //implementation("com.facebook.android:facebook-android-sdk:4.42.0")
-
-    //---------------------------------------------------------------
+    // Firebase.
     implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
-    implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.code.gson:gson:2.8.8")
 
-
-    // Add the dependency for the Firebase Authentication library
-    // When using the BoM, you don't specify versions in Firebase library dependencies
+    // Autenticacion con Google.
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
     implementation("com.google.firebase:firebase-auth-ktx")
 
-    // Also add the dependency for the Google Play services library and specify its version
-    implementation("com.google.android.gms:play-services-auth:20.7.0")
-    implementation("com.google.firebase:firebase-firestore-ktx:24.6.0")
+    // Gson: Serializar objetos para el bundle.
+    implementation("com.google.code.gson:gson:2.8.8")
+
+    // Firestore: Almacenamiento para imagenes.
+    implementation(libs.firebase.storage.ktx)
+
+    // Picasso: Obtener imagenes almacenadas en firestore a partir URLs persistidas en firebaseDB.
+    implementation("com.squareup.picasso:picasso:2.71828")
+
+    // Google maps
+    implementation("com.google.android.gms:play-services-maps:17.0.0")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.6.0") // GeoPoint
+
+    // Notificaciones
+    implementation(libs.firebase.messaging)
+
+    // Open streetmap
+    implementation("org.osmdroid:osmdroid-android:6.1.10")
 
 }

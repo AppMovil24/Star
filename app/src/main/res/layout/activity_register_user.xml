@@ -3,46 +3,76 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
 
     <EditText
-        android:id="@+id/etUsuarioId"
+        android:id="@+id/registerUser_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Usuario ID" />
+        android:hint="@string/username" />
 
-    <EditText
-        android:id="@+id/etNombre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Nombre" />
-
-    <EditText
-        android:id="@+id/etApellido"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Apellido" />
-
-    <CheckBox
-        android:id="@+id/cbCompetidor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Competidor" />
-
-    <CheckBox
-        android:id="@+id/cbFiscalizador"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Fiscalizador" />
-
-    <Spinner
-        android:id="@+id/spDisciplina"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/user_image"
+        android:layout_width="300dp"
+        android:layout_height= "300dp"
+        android:layout_marginTop="20dp"
+        tools:srcCompat="@tools:sample/avatars"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
     <Button
-        android:id="@+id/btnRegister"
+        android:id="@+id/camera_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/takePhoto"
+        app:layout_constraintTop_toBottomOf="@+id/user_image"
+        app:layout_constraintEnd_toStartOf="@+id/image_galery_button"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <Button
+        android:id="@+id/image_galery_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/galleryImage"
+        app:layout_constraintTop_toBottomOf="@+id/user_image"
+        app:layout_constraintStart_toEndOf="@id/camera_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <EditText
+        android:id="@+id/registerUser_real_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Registrar" />
+        android:hint="@string/name" />
+
+    <EditText
+        android:id="@+id/registerUser_surname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/surname" />
+
+    <CheckBox
+        android:id="@+id/registerUser_challenger"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/challenger" />
+
+    <CheckBox
+        android:id="@+id/registerUser_supervisor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/supervisor" />
+
+    <Button
+        android:id="@+id/registerUser_register_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/register" />
+
 </LinearLayout>

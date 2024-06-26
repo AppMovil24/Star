@@ -1,7 +1,7 @@
-package com.appmovil24.starproyect.activity.feed
+package com.appmovil24.starproyect.ui.home
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -14,18 +14,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.appmovil24.starproyect.R
-import com.appmovil24.starproyect.databinding.FragmentCompetenciaListBinding
-import com.appmovil24.starproyect.databinding.CompetenciaListContentBinding
-import com.appmovil24.starproyect.model.ChallengePostDTO
+import com.appmovil24.starproyect.databinding.FragmentHomeListBinding
+import com.appmovil24.starproyect.databinding.HomeListContentBinding
+import com.appmovil24.starproyect.model.ChallengePost
 import com.appmovil24.starproyect.repository.ChallengePostRepository
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
-class competenciaListFragment : Fragment() {
+class HomeListFragment : Fragment() {
 
     private val unhandledKeyEventListenerCompat =
         ViewCompat.OnUnhandledKeyEventListenerCompat { v, event ->
@@ -47,7 +43,8 @@ class competenciaListFragment : Fragment() {
             false
         }
 
-    private var binding: FragmentCompetenciaListBinding? = null
+    private var binding: FragmentHomeListBinding? = null
+    private lateinit  var view: View
     private lateinit var challengePostRepository: ChallengePostRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,16 +56,34 @@ class competenciaListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentCompetenciaListBinding.inflate(inflater, container, false)
+        binding = FragmentHomeListBinding.inflate(inflater, container, false)
         return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recyclerView: RecyclerView = binding?.competenciaList !!
-        val itemDetailFragmentContainer: View? = view.findViewById(R.id.competencia_detail_nav_container)
+        this.view = view
 
         ViewCompat.addOnUnhandledKeyEventListener(view, unhandledKeyEventListenerCompat)
+        binding?.publishChallengeButton?.setOnClickListener {
+            val intent = Intent(view.context, PublishChallengePostFormActivity::class.java)
+            startActivity(intent)
+        }
+        binding?.challengeListFilterButton?.setOnClickListener {
+            val intent = Intent(view.context, FilterActitity::class.java)
+            startActivity(intent)
+        }
+        /*binding?.userProfileButton?.setOnClickListener {
+            val intent = Intent(view.context, UserProfile::class.java)
+            startActivity(intent)
+        }*/
+        onResume()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val recyclerView: RecyclerView = binding?.homeList !!
+        val itemDetailFragmentContainer: View? = view.findViewById(R.id.home_detail_nav_container)
         lifecycleScope.launch {
             recyclerView.adapter = SimpleItemRecyclerViewAdapter(
                 challengePostRepository.getAll(), itemDetailFragmentContainer)
@@ -76,12 +91,12 @@ class competenciaListFragment : Fragment() {
     }
 
     class SimpleItemRecyclerViewAdapter(
-        private val values: List<ChallengePostDTO>,
+        private val values: List<ChallengePost>,
         private val itemDetailFragmentContainer: View?
     ) : RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val binding = CompetenciaListContentBinding.inflate(
+            val binding = HomeListContentBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -91,18 +106,19 @@ class competenciaListFragment : Fragment() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = values[position]
-            holder.idView.text = holder.itemView.context.getString(
+            var txt = holder.itemView.context.getString(
                 R.string.concatenate_two_string, item.discipline, item.date.toString())
+            holder.idView.text = "${txt} ${item.schedule}"
 //            holder.contentView.text = ""
 
             with(holder.itemView) {
                 tag = item
                 setOnClickListener { itemView ->
-                    val challengePostDTO = itemView.tag as ChallengePostDTO
+                    val ChallengePost = itemView.tag as ChallengePost
                     val bundle = Bundle()
                     val gson = Gson()
-                    val challengePostJson = gson.toJson(challengePostDTO)
-                    bundle.putString(competenciaDetailFragment.ARG_CHALLENGE_POST_DTO, challengePostJson)
+                    val challengePostJson = gson.toJson(ChallengePost)
+                    bundle.putString(HomeDetailFragment.ARG_CHALLENGE_POST, challengePostJson)
                     if (itemDetailFragmentContainer != null) {
                         itemDetailFragmentContainer.findNavController()
                             .navigate(R.id.fragment_competencia_detail, bundle)
@@ -115,7 +131,7 @@ class competenciaListFragment : Fragment() {
 
         override fun getItemCount() = values.size
 
-        inner class ViewHolder(binding: CompetenciaListContentBinding) :
+        inner class ViewHolder(binding: HomeListContentBinding) :
             RecyclerView.ViewHolder(binding.root) {
             val idView: TextView = binding.idText
             val contentView: TextView = binding.content

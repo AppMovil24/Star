@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_details"
     app:startDestination="@id/fragment_competencia_detail">
+
     <fragment
         android:id="@+id/fragment_competencia_detail"
-        android:name="com.appmovil24.starproyect.activity.feed.competenciaDetailFragment"
+        android:name="com.appmovil24.starproyect.ui.home.HomeDetailFragment"
         android:label="challenge_detail"
-        tools:layout="@layout/fragment_competencia_detail">
+        tools:layout="@layout/fragment_home_detail">
         <argument
             android:name="item_id"
             android:defaultValue=""
