@@ -23,22 +23,23 @@
 
             <meta-data
                 android:name="com.google.android.geo.API_KEY"
-                android:value="AIzaSyBCGhLScgUKRhGaDanwo6AVKZKg70"/>
-
+                android:value="AIzaSyBCGhLScgUKRhGaDanwo6AVKZKg70"
+                />
             <activity
-                android:name=".Login"
+                android:name=".LoginActivity"
                 android:exported="true">
                 <intent-filter>
                     <action android:name="android.intent.action.MAIN" />
                     <category android:name="android.intent.category.LAUNCHER" />
                 </intent-filter>
             </activity>
-
             <activity
                 android:name=".MainActivity"
-                android:windowSoftInputMode="adjustResize"/>
-            <activity android:name=".ui.home.PublishChallengePostForm" />
+                android:windowSoftInputMode="adjustResize"
+                />
+            <activity android:name=".ui.home.PublishChallengePostFormActivity" />
+        <activity android:name=".ui.home.FilterActitity" />
+        <activity android:name=".RegisterUserFormActivity" />
 
     </application>
-
 </manifest>

@@ -4,24 +4,30 @@ import com.google.firebase.firestore.GeoPoint
 import java.io.Serializable
 
 public data class ChallengePost(
-    val id: String,
-    val state: String? = null,
+    var id: String,
+    var state: String? = null,
     var discipline: String? = null,
     var date: String? = null,
     var schedule: String? = null,
     var location: GeoPoint? = null,
-    val publishBy: String? = null,
-    val acceptedBy: String? = null,
-    val supervisedBy: String? = null
+    var publishBy: String? = null,
+    var acceptedBy: String? = null,
+    var supervisedBy: String? = null,
+    var opponentsVote: String? = null,
+    var publisherVote: String? = null,
+    var supervisorVote: String? = null,
 )
 
 public data class ChallengePostDTO(
-    val state: String? = null,
-    val discipline: String? = null,
-    val date: String? = null,
-    val schedule: String? = null,
-    val location: GeoPoint? = null,
-    val publishBy: String? = null,
-    val acceptedBy: String? = null,
-    val supervisedBy: String? = null
+    var state: String? = null,
+    var discipline: String? = null,
+    var date: String? = null,
+    var schedule: String? = null,
+    var location: GeoPoint? = null,
+    var publishBy: String? = null,
+    var acceptedBy: String? = null,
+    var supervisedBy: String? = null,
+    var opponentsVote: String? = null,
+    var publisherVote: String? = null,
+    var supervisorVote: String? = null,
 )

@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.volley)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -64,11 +65,19 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.8")
 
     // Firestore: Almacenamiento para imagenes.
-    implementation("com.google.firebase:firebase-firestore-ktx:24.6.0")
+    implementation(libs.firebase.storage.ktx)
 
     // Picasso: Obtener imagenes almacenadas en firestore a partir URLs persistidas en firebaseDB.
     implementation("com.squareup.picasso:picasso:2.71828")
 
-    //Google maps
+    // Google maps
     implementation("com.google.android.gms:play-services-maps:17.0.0")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.6.0") // GeoPoint
+
+    // Notificaciones
+    implementation(libs.firebase.messaging)
+
+    // Open streetmap
+    implementation("org.osmdroid:osmdroid-android:6.1.10")
+
 }
