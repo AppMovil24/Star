@@ -8,18 +8,18 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.appmovil24.starproyect.ui.home.HomeFragment"
-        android:label="@string/title_home"
+        android:label="@string/challenge_posts_list_menu_item"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.appmovil24.starproyect.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:name="com.appmovil24.starproyect.ui.userProfile.UserProfileFragment"
+        android:label="@string/user_profile_menu_item"
+        />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.appmovil24.starproyect.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:name="com.appmovil24.starproyect.ui.preferences.PreferencesFragment"
+        android:label="@string/preferences_menu_item"
+        />
 </navigation>

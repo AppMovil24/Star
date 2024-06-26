@@ -1,15 +1,21 @@
 package com.appmovil24.starproyect.repository
 
+import com.appmovil24.starproyect.enum.ChallengePostState
 import com.appmovil24.starproyect.model.ChallengePost
 import com.appmovil24.starproyect.model.ChallengePostDTO
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.TaskCompletionSource
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 
 public class ChallengePostRepository() {
+
+    companion object {
+        var states: MutableList<String> = mutableListOf()
+    }
 
     private val challengePostsCollection = Firebase.firestore.collection("competencias")
 
@@ -33,7 +39,12 @@ public class ChallengePostRepository() {
     suspend fun getAll(): List<ChallengePost> {
         val competenciasList = mutableListOf<ChallengePost>()
         try {
-            val querySnapshot = challengePostsCollection.get().await()
+            val querySnapshot : QuerySnapshot
+            if(ChallengePostRepository.states.isEmpty())
+                querySnapshot = challengePostsCollection.get().await()
+            else
+                querySnapshot = challengePostsCollection.whereIn("state", ChallengePostRepository.states).get().await()
+
             for (document in querySnapshot.documents) {
                 val challengePostDTO = document.toObject(ChallengePostDTO::class.java)
                 challengePostDTO?.let {
@@ -46,7 +57,10 @@ public class ChallengePostRepository() {
                         location = document.getGeoPoint("location"),
                         publishBy = document.getString("publishBy"),
                         acceptedBy = document.getString("acceptedBy"),
-                        supervisedBy = document.getString("supervisedBy")
+                        supervisedBy = document.getString("supervisedBy"),
+                        opponentsVote = document.getString("opponentsVote"),
+                        publisherVote = document.getString("publisherVote"),
+                        supervisorVote = document.getString("supervisorVote"),
                     ))
                 }
             }

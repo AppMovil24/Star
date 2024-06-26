@@ -66,14 +66,14 @@ class HomeListFragment : Fragment() {
 
         ViewCompat.addOnUnhandledKeyEventListener(view, unhandledKeyEventListenerCompat)
         binding?.publishChallengeButton?.setOnClickListener {
-            val intent = Intent(view.context, PublishChallengePostForm::class.java)
+            val intent = Intent(view.context, PublishChallengePostFormActivity::class.java)
             startActivity(intent)
         }
-        /*binding?.preferencesButton?.setOnClickListener {
-            val intent = Intent(view.context, Preferences::class.java)
+        binding?.challengeListFilterButton?.setOnClickListener {
+            val intent = Intent(view.context, FilterActitity::class.java)
             startActivity(intent)
         }
-        binding?.userProfileButton?.setOnClickListener {
+        /*binding?.userProfileButton?.setOnClickListener {
             val intent = Intent(view.context, UserProfile::class.java)
             startActivity(intent)
         }*/
@@ -106,8 +106,9 @@ class HomeListFragment : Fragment() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = values[position]
-            holder.idView.text = holder.itemView.context.getString(
+            var txt = holder.itemView.context.getString(
                 R.string.concatenate_two_string, item.discipline, item.date.toString())
+            holder.idView.text = "${txt} ${item.schedule}"
 //            holder.contentView.text = ""
 
             with(holder.itemView) {

@@ -4,9 +4,9 @@
     <string name="title_activity_main">MainActivity</string>
 
     <!-- Navigation -->
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="challenge_posts_list_menu_item">Competencias</string>
+    <string name="user_profile_menu_item">Perfil</string>
+    <string name="preferences_menu_item">Preferencias</string>
 
     <!-- Autenticacion con Google -->
     <string name="default_web_client_id">316019475338-3qukeonlisorgv83oltus3cg159togr6.apps.googleusercontent.com</string>
@@ -24,6 +24,8 @@
     <string name="accept_challenge">Aceptar desafio</string>
     <string name="supervisor">Fiscalizador</string>
     <string name="supervise_challenge">Fiscalizar desafio</string>
+    <string name="complete_challenge">Elegir a este usuario como ganador de la competencia.</string>
+    <string name="winner_by">%1$s indico que el ganador es %2$s.</string>
 
     <!-- fragment_home_list.xml -->
     <string name="user_profile">Perfil</string>
@@ -37,5 +39,28 @@
     <string name="schedule">Hora (HH:mm)</string>
     <string name="date">Fecha (dd/MM/yyyy)</string>
     <string name="save_challenge">Guardar Competencia</string>
+
+    <!-- activity_challenge_list_filter.xml -->
+    <string name="filter_challenge_posts_by">Filtrar competencias por:</string>
+    <string name="opened_challenges">Competencias abiertas</string>
+    <string name="accepted_challenges">Competencias aceptadas</string>
+    <string name="completed_challenges">Competencias completadas</string>
+    <string name="apply_filters_button">Aplicar filtors</string>
+
+    <!-- activity_register_user.xml -->
+    <string name="username">Nombre de Usuario</string>
+    <string name="challenger">Competidor</string>
+    <string name="surname">Apellido</string>
+    <string name="name">Nombre</string>
+    <string name="register">Registrar</string>
+
+    <!-- fragment_user_profile.xml -->
+    <string name="score_label">Puntos: %1$s</string>
+
+    <!-- fragment_preferences.xml -->
+    <string name="logout">Logout</string>
+
+    <!-- HomeDetailFragment.kt -->
+    <string name="challenge_marker_title">Competencia</string>
 
 </resources>
