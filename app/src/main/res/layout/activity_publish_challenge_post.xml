@@ -12,10 +12,22 @@
         android:padding="16dp"
         android:background="@color/white">
 
-        <Spinner
-            android:id="@+id/input_discipline"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/spinner_background"
+            android:layout_marginBottom="13sp"
+            >
+
+            <Spinner
+                android:id="@+id/input_discipline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="13sp"/>
+
+        </LinearLayout>
 
         <EditText
             android:id="@+id/input_date"

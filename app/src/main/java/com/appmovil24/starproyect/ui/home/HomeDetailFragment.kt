@@ -1,5 +1,7 @@
 package com.appmovil24.starproyect.ui.home
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.appmovil24.starproyect.MyFirebaseMessagingService
 import com.appmovil24.starproyect.model.ChallengePostDTO
 import com.appmovil24.starproyect.R
 import com.appmovil24.starproyect.databinding.FragmentHomeDetailBinding
@@ -30,6 +33,9 @@ import kotlinx.coroutines.tasks.await
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.overlay.Marker
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.RemoteMessage
+import java.util.UUID
 
 
 /**
@@ -94,9 +100,123 @@ class HomeDetailFragment : Fragment() {
             challengePost.opponentsVote = challengePostDTO?.opponentsVote
             challengePost.publisherVote = challengePostDTO?.publisherVote
             challengePost.supervisorVote = challengePostDTO?.supervisorVote
+            challengePost.image = challengePostDTO?.image
 
             updateContent()
         }
+    }
+
+    private fun updateContent() {
+        renderChallengeStateSection(challengePost)
+        renderGeneralDetailsSection(challengePost)
+        userAccountRepository.get { userAccountDTO: UserAccountDTO? ->
+            val currentUserIsPublisher = challengePost.publishBy.equals(userAccountDTO?.id)
+            val currentUserIsOpponent = challengePost.acceptedBy.equals(userAccountDTO?.id)
+            val currentUserIsSupervisor = challengePost.supervisedBy.equals(userAccountDTO?.id)
+
+            renderPublisherSection(currentUserIsPublisher)
+            renderOpponentSection(currentUserIsPublisher, currentUserIsSupervisor, userAccountDTO?.id!!)
+            renderSupervisorSection(currentUserIsPublisher, currentUserIsOpponent, userAccountDTO.id)
+
+            if(challengePost.state.equals(ChallengePostState.COMPLETED.name))
+                renderWinner(challengePost)
+            else if(challengePost.state.equals(ChallengePostState.ACCEPTED.name) &&
+                ( currentUserIsPublisher || currentUserIsSupervisor || currentUserIsOpponent) )
+            {
+                initVoteButton(challengePost.publishBy !!, challengePost, binding?.homeDetailPublisherWinsButton !!
+                    , currentUserIsSupervisor,currentUserIsPublisher)
+                initVoteButton(challengePost.acceptedBy!!, challengePost, binding?.homeDetailOpponentWinsButton !!
+                    , currentUserIsSupervisor, currentUserIsPublisher)
+            }
+        }
+    }
+
+    private fun renderPublisherSection(currentUserIsPublisher: Boolean) {
+        loadPublisherInformation()
+        if (currentUserIsPublisher && challengePost.state.equals(ChallengePostState.OPEN.name)){
+            initEditButton(challengePost)
+            initDeleteButton(challengePost)
+        }
+    }
+
+    private fun renderOpponentSection(currentUserIsPublisher: Boolean,
+                                      currentUserIsSupervisor: Boolean,
+                                      userAccountID: String ) {
+        if (hasValue(challengePost.acceptedBy))
+            loadOponnent()
+        else if (!currentUserIsPublisher && !currentUserIsSupervisor)
+            initAcceptChallengeButton(userAccountID)
+        else
+            binding?.homeDetailOpponentVacancy?.visibility = View.VISIBLE
+    }
+
+    private fun renderSupervisorSection(currentUserIsPublisher: Boolean,
+                                        currentUserIsOpponent: Boolean,
+                                        userAccountID: String ) {
+        if (hasValue(challengePost.supervisedBy))
+            loadSupervisorInformation()
+        else if (!currentUserIsPublisher && !currentUserIsOpponent)
+            initSuperviseChallengeButton(userAccountID)
+        else
+            binding?.homeDetailSupervisorVacancy?.visibility = View.VISIBLE
+    }
+
+    private fun renderGeneralDetailsSection(item: ChallengePost) {
+        binding?.homeDetailDiscipline?.text = "${item.discipline}"
+        binding?.homeDetailDate?.text = "${item.date}"
+        binding?.homeDetailSchedule?.text = "${item.schedule}"
+        renderMap()
+    }
+
+    private fun renderMap() {
+        var mapView = binding?.challengePostLocation
+        mapView?.setTileSource(TileSourceFactory.MAPNIK)
+        mapView?.setMultiTouchControls(true)
+        var mapController = mapView?.controller
+        mapController?.setZoom(15.0)
+        val point = GeoPoint(challengePost.location?.latitude!!, challengePost.location?.longitude!!)
+        mapController?.setCenter(point)
+        mapView?.overlays?.clear()
+        val marker = Marker(mapView)
+        marker.position = point
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+        marker.title = "@string/challenge_marker_title"
+        mapView?.overlays?.add(marker)
+        mapView?.invalidate()
+    }
+
+    private fun loadPublisherInformation() {
+        initUserFields(challengePost.publishBy !!, challengePost, binding?.homeDetailPublisherFullName !!,
+            binding?.homeDetailPublisherImage !!)
+    }
+    private fun loadOponnent() {
+        binding?.homeDetailOpponentFullName?.visibility = View.VISIBLE
+        binding?.homeDetailOpponentScore?.visibility = View.VISIBLE
+        binding?.homeDetailOpponentImage?.visibility = View.VISIBLE
+        initUserFields(
+            challengePost.acceptedBy!!, challengePost, binding?.homeDetailOpponentFullName!!,
+            binding?.homeDetailOpponentImage!!
+        )
+    }
+
+    private fun initAcceptChallengeButton(userAccountID : String) {
+        var challengePostDTO = createDTO(challengePost)
+        challengePostDTO.state = ChallengePostState.ACCEPTED.name // Si presiona el boton.
+        challengePostDTO.acceptedBy = userAccountID
+        initUpdateButton(challengePost.id, challengePostDTO, binding?.homeDetailAcceptChallengeButton !!, binding?.homeDetailOpponentImage!!)
+    }
+
+    private fun loadSupervisorInformation() {
+        binding?.homeDetailSupervisorFullName?.visibility = View.VISIBLE
+        binding?.homeDetailSupervisorImage?.visibility = View.VISIBLE
+        initUserFields(challengePost.supervisedBy !!, challengePost, binding?.homeDetailSupervisorFullName !!,
+            binding?.homeDetailSupervisorImage !!)
+    }
+
+    private fun initSuperviseChallengeButton(userAccountID: String) {
+        var challengePostDTO = createDTO(challengePost)
+        challengePostDTO.supervisedBy = userAccountID
+        initUpdateButton(challengePost.id, challengePostDTO, binding?.homeDetailSuperviseChallengeButton !!, binding?.homeDetailSupervisorImage!!)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -108,61 +228,95 @@ class HomeDetailFragment : Fragment() {
         this.view = view
     }
 
-    private fun initVotes(item : ChallengePost) {
-        if(! item.publisherVote.isNullOrEmpty()) {
+    private fun renderChallengeStateSection(item : ChallengePost) {
+        if(item.state.equals(ChallengePostState.ACCEPTED.name))
+            renderVotes(item)
+        else if(item.state.equals(ChallengePostState.COMPLETED.name))
+            renderWinner(item)
+    }
+
+    private fun renderVotes(item : ChallengePost) {
+        if (!item.publisherVote.isNullOrEmpty()) {
+            binding?.homeDetailVotes?.visibility = View.VISIBLE
             binding?.homeDetailPublishersVote?.visibility = View.VISIBLE
-            binding?.homeDetailPublishersVote?.text = getString(R.string.winner_by
-                , item.publishBy, item.publisherVote)
+            binding?.homeDetailPublishersVote?.text = getString(
+                R.string.winner_by, item.publishBy, item.publisherVote
+            )
         }
-        if(! item.opponentsVote.isNullOrEmpty()) {
+        if (!item.opponentsVote.isNullOrEmpty()) {
+            binding?.homeDetailVotes?.visibility = View.VISIBLE
             binding?.homeDetailOpponentsVote?.visibility = View.VISIBLE
-            binding?.homeDetailOpponentsVote?.text = getString(R.string.winner_by
-                , item.acceptedBy, item.opponentsVote)
+            binding?.homeDetailOpponentsVote?.text = getString(
+                R.string.winner_by, item.acceptedBy, item.opponentsVote
+            )
         }
-        if(! item.supervisorVote.isNullOrEmpty()) {
+        if (!item.supervisorVote.isNullOrEmpty()) {
+            binding?.homeDetailVotes?.visibility = View.VISIBLE
             binding?.homeDetailSupervisorsVote?.visibility = View.VISIBLE
-            binding?.homeDetailSupervisorsVote?.text = getString(R.string.winner_by
-                , item.supervisedBy, item.supervisorVote)
+            binding?.homeDetailSupervisorsVote?.text = getString(
+                R.string.winner_by, item.supervisedBy, item.supervisorVote
+            )
         }
     }
 
-    private fun initChallengeGeneralDetails(item: ChallengePost) {
-        binding?.homeDetailDiscipline?.text = "${item.discipline}"
-        binding?.homeDetailDate?.text = "${item.date}"
-        binding?.homeDetailSchedule?.text = "${item.schedule}"
+    private fun renderWinner(item : ChallengePost) {
+        binding?.homeDetailVotes?.visibility = View.VISIBLE
+        binding?.homeDetailWinnerContainer?.visibility = View.VISIBLE
+        binding?.homeDetailPublisherWinsButton?.visibility = View.GONE
+        binding?.homeDetailOpponentWinsButton?.visibility = View.GONE
+        binding?.homeDetailPublishersVote?.visibility = View.GONE
+        binding?.homeDetailOpponentsVote?.visibility = View.GONE
+        var winner = item.supervisorVote
+        if(! hasValue(winner))
+            winner = item.publishBy
+        userAccountRepository.get(winner!!) { user: UserAccountDTO? ->
+            Picasso.get().load(user?.profileImage).into(binding?.homeDetailWinnerImage)
+            binding?.homeDetailWinnerUsername?.text = "${user?.name} ${user?.surname}"
+        }
     }
 
-    private fun initABMButons(item: ChallengePost) {
-        if(challengePost.state.equals(ChallengePostState.OPEN.name)) {
-            binding?.homeDetailEditButton?.visibility = View.VISIBLE
-            binding?.homeDetailEditButton?.setOnClickListener {
-                val intent = Intent(view.context, PublishChallengePostFormActivity::class.java)
-                val bundle = Bundle()
-                bundle.putString("challengePostID", item.id)
-                intent.putExtras(bundle)
-                startActivity(intent)
-            }
-            binding?.homeDetailDeleteButton?.visibility = View.VISIBLE
-            binding?.homeDetailDeleteButton?.setOnClickListener {
-                GlobalScope.launch(Dispatchers.Main) {
-                    val result = challengePostRepository.delete(challengePost.id).await()
-                    if (result) {
-                        findNavController().popBackStack()
-                    } else {
-                        Toast.makeText(
-                            view.context,
-                            "No se pudo eliminar la publicacion.",
-                            Toast.LENGTH_SHORT
-                        ).show()
+    private fun initEditButton(item: ChallengePost) {
+        binding?.homeDetailEditButton?.visibility = View.VISIBLE
+        binding?.homeDetailEditButton?.setOnClickListener {
+            val intent = Intent(view.context, PublishChallengePostFormActivity::class.java)
+            val bundle = Bundle()
+            bundle.putString("challengePostID", item.id)
+            intent.putExtras(bundle)
+            startActivity(intent)
+        }
+    }
+
+    private fun initDeleteButton(item: ChallengePost) {
+        binding?.homeDetailDeleteButton?.visibility = View.VISIBLE
+        binding?.homeDetailDeleteButton?.setOnClickListener {
+            val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("")
+                .setMessage("¿ Seguro desea guardar esta competencia ?")
+                .setPositiveButton(getString(R.string.yes), DialogInterface.OnClickListener { dialog, which ->
+                    GlobalScope.launch(Dispatchers.Main) {
+                        val result = challengePostRepository.delete(challengePost.id).await()
+                        if (result) {
+                            findNavController().popBackStack()
+                        } else {
+                            Toast.makeText(view.context, "No se pudo eliminar la publicacion.",
+                                Toast.LENGTH_SHORT).show()
+                        }
                     }
-                }
-            }
+                })
+                .setNegativeButton(
+                    getString(R.string.no),
+                    DialogInterface.OnClickListener { dialog, which -> // Do something when Cancel is clicked
+                        dialog.dismiss()
+                    })
+                .show()
         }
     }
 
     private fun initUserFields(userName: String, item: ChallengePost, fullNameField: TextView,
                                imageField: ImageView) {
         userAccountRepository.get(userName) { user: UserAccountDTO? ->
+            fullNameField.visibility = View.VISIBLE
+            imageField.visibility = View.VISIBLE
             fullNameField.text = "${user?.name} ${user?.surname} ( ${userName} )"
             Picasso.get().load(user?.profileImage).into(imageField)
         }
@@ -172,34 +326,40 @@ class HomeDetailFragment : Fragment() {
                                  acceptRolButton: Button, imageView: ImageView? ) {
         acceptRolButton.visibility = View.VISIBLE
         acceptRolButton.setOnClickListener {
-            val updateTask =
-                challengePostRepository.update(challengePostID, challengePostDTO)
-            updateTask.addOnSuccessListener {
-                acceptRolButton.visibility = View.GONE
-                if(imageView != null) {
-                    imageView.visibility = View.VISIBLE
-                    if (imageView.equals(binding?.homeDetailOpponentImage))
-                        binding?.homeDetailSuperviseChallengeButton?.visibility = View.GONE
-                    else
-                        binding?.homeDetailAcceptChallengeButton?.visibility = View.GONE
-                }
-                refreshDetail()
-                Toast.makeText(
-                    requireContext(),
-                    "Acción completada.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }.addOnFailureListener { e ->
-                Toast.makeText(
-                    requireContext(),
-                    "No fue posible realizar la operación: ${e.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+            val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("")
+                .setMessage("¿ Seguro desea guardar esta competencia ?")
+                .setPositiveButton(getString(R.string.yes), DialogInterface.OnClickListener { dialog, which ->
+                    val updateTask = challengePostRepository.update(challengePostID, challengePostDTO)
+                    updateTask.addOnSuccessListener {
+                        acceptRolButton.visibility = View.GONE
+
+                        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                val token = task.result
+                                MyFirebaseMessagingService.deviceToken = token
+                                MyFirebaseMessagingService().sendNotificationToUser(
+                                    MyFirebaseMessagingService.deviceToken, "exitosa", "sasas")
+
+                            }
+                        }
+
+                        refreshDetail()
+                        Toast.makeText(requireContext(), "Acción completada.", Toast.LENGTH_SHORT).show()
+                    }.addOnFailureListener { e ->
+                        Toast.makeText(requireContext(), "Error al guardar.", Toast.LENGTH_SHORT).show()
+                    }
+                })
+                .setNegativeButton(
+                    getString(R.string.no),
+                    DialogInterface.OnClickListener { dialog, which -> // Do something when Cancel is clicked
+                        dialog.dismiss()
+                    })
+                .show()
         }
     }
 
-    private fun convertChallengePostFormat(item: ChallengePost) : ChallengePostDTO {
+    private fun createDTO(item: ChallengePost) : ChallengePostDTO {
         return ChallengePostDTO(
             item.state,
             item.discipline,
@@ -211,7 +371,8 @@ class HomeDetailFragment : Fragment() {
             item.supervisedBy,
             item.opponentsVote,
             item.publisherVote,
-            item.supervisorVote
+            item.supervisorVote,
+            item.image
         )
     }
 
@@ -232,9 +393,9 @@ class HomeDetailFragment : Fragment() {
         }
     }
 
-    private fun onVoteButtonClicked(votedUserID: String, item: ChallengePost, button: Button,
-           currentUserIsSupervisor: Boolean, currentUserIsPublisher: Boolean) {
-        var challengePostDTO = convertChallengePostFormat(item)
+    private fun initVoteButton(votedUserID: String, item: ChallengePost, button: Button,
+                               currentUserIsSupervisor: Boolean, currentUserIsPublisher: Boolean) {
+        var challengePostDTO = createDTO(item)
         if(currentUserIsSupervisor) {
             challengePostDTO.supervisorVote = votedUserID
             challengePostDTO.state = ChallengePostState.COMPLETED.name
@@ -247,7 +408,8 @@ class HomeDetailFragment : Fragment() {
         if( challengePostDTO.supervisedBy.isNullOrEmpty() &&
             ! challengePostDTO.publisherVote.isNullOrEmpty() &&
             ! challengePostDTO.opponentsVote.isNullOrEmpty() &&
-            challengePostDTO.publisherVote.equals(challengePostDTO.opponentsVote))
+            challengePostDTO.publisherVote.equals(challengePostDTO.opponentsVote) &&
+            ! challengePostDTO.state.equals(ChallengePostState.COMPLETED.name))
         {
             challengePostDTO.state = ChallengePostState.COMPLETED.name
             addUserScore(challengePostDTO.publisherVote!!)
@@ -258,73 +420,6 @@ class HomeDetailFragment : Fragment() {
 
     private fun hasValue(text: String?) : Boolean {
         return text != null && text.isNotBlank()
-    }
-
-    private fun renderMap(){
-        var mapView = binding?.challengePostLocation
-        mapView?.setTileSource(TileSourceFactory.MAPNIK)
-        mapView?.setMultiTouchControls(true)
-        var mapController = mapView?.controller
-        mapController?.setZoom(15.0)
-        val berazateguiCenter = GeoPoint(challengePost.location?.latitude!!, challengePost.location?.longitude!!)
-        mapController?.setCenter(berazateguiCenter)
-        mapView?.overlays?.clear()
-        val marker = Marker(mapView)
-        marker.position = berazateguiCenter
-        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-        marker.title = "@string/challenge_marker_title"
-        mapView?.overlays?.add(marker)
-        mapView?.invalidate()
-    }
-
-    private fun updateContent() {
-        initVotes(challengePost)
-        initChallengeGeneralDetails(challengePost)
-        userAccountRepository.get { userAccountDTO: UserAccountDTO? ->
-            renderMap()
-            val currentUserIsPublisher = challengePost.publishBy.equals(userAccountDTO?.id)
-            val currentUserIsOpponent = challengePost.acceptedBy.equals(userAccountDTO?.id)
-            val currentUserIsSupervisor = challengePost.supervisedBy.equals(userAccountDTO?.id)
-            if (currentUserIsPublisher)
-                initABMButons(challengePost)
-            if (hasValue(challengePost.acceptedBy))
-                initUserFields(challengePost.acceptedBy !!, challengePost, binding?.homeDetailOpponentScore !!,
-                    binding?.homeDetailOpponentImage !!)
-            else {
-                binding?.homeDetailOpponentFullName?.visibility = View.GONE
-                binding?.homeDetailOpponentScore?.visibility = View.GONE
-                binding?.homeDetailOpponentImage?.visibility = View.GONE
-                if (!currentUserIsPublisher && !currentUserIsSupervisor) {
-                    var challengePostDTO = convertChallengePostFormat(challengePost)
-                    challengePostDTO.state = ChallengePostState.ACCEPTED.name
-                    challengePostDTO.acceptedBy = userAccountDTO?.id !!
-                    initUpdateButton(challengePost.id, challengePostDTO, binding?.homeDetailAcceptChallengeButton !!, binding?.homeDetailOpponentImage!!)
-                }
-            }
-            if (hasValue(challengePost.supervisedBy))
-                initUserFields(challengePost.supervisedBy !!, challengePost, binding?.homeDetailSupervisorFullName !!,
-                    binding?.homeDetailSupervisorImage !!)
-            else {
-                binding?.homeDetailSupervisorFullName?.visibility = View.GONE
-                binding?.homeDetailSupervisorImage?.visibility = View.GONE
-                if (!currentUserIsPublisher && !currentUserIsOpponent) {
-                    var challengePostDTO = convertChallengePostFormat(challengePost)
-                    challengePostDTO.supervisedBy = userAccountDTO?.id
-                    initUpdateButton(challengePost.id, challengePostDTO, binding?.homeDetailSuperviseChallengeButton !!, binding?.homeDetailSupervisorImage!!)
-                }
-            }
-            initUserFields(challengePost.publishBy !!, challengePost, binding?.homeDetailPublisherFullName !!,
-                binding?.homeDetailPublisherImage !!)
-
-            if(challengePost.state.equals(ChallengePostState.ACCEPTED.name) &&
-                ( currentUserIsPublisher || currentUserIsSupervisor || currentUserIsOpponent) )
-            {
-                onVoteButtonClicked(challengePost.publishBy !!, challengePost, binding?.homeDetailPublisherWinsButton !!
-                    , currentUserIsSupervisor,currentUserIsPublisher)
-                onVoteButtonClicked(challengePost.acceptedBy!!, challengePost, binding?.homeDetailOpponentWinsButton !!
-                    , currentUserIsSupervisor, currentUserIsPublisher)
-            }
-        }
     }
 
     companion object {

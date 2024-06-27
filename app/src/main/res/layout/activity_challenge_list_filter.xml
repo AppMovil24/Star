@@ -3,56 +3,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <TextView
-        android:id="@+id/filter_challenge_posts_title"
-        android:layout_width="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/filter_challenge_posts_by"
-        android:textSize="20dp"
-        android:layout_marginBottom="30dp"
-        android:layout_marginTop="40dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/by_opened_challenges"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+        <TextView
+            android:id="@+id/filter_challenge_posts_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/filter_challenge_posts_by"
+            android:textSize="20dp"
+            android:layout_marginBottom="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/by_opened_challenges"/>
 
-    <CheckBox
-        android:id="@+id/by_opened_challenges"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/opened_challenges"
-        android:layout_marginTop="20dp"
-        app:layout_constraintTop_toBottomOf="@+id/filter_challenge_posts_title"
-        app:layout_constraintStart_toStartOf="@+id/filter_challenge_posts_title"
-        app:layout_constraintBottom_toTopOf="@+id/by_accepted_challenges"/>
+        <CheckBox
+            android:id="@+id/by_opened_challenges"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/opened_challenges"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/filter_challenge_posts_title"
+            app:layout_constraintStart_toStartOf="@+id/filter_challenge_posts_title"
+            app:layout_constraintBottom_toTopOf="@+id/by_accepted_challenges"/>
 
-    <CheckBox
-        android:id="@+id/by_accepted_challenges"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/accepted_challenges"
-        app:layout_constraintTop_toBottomOf="@+id/by_opened_challenges"
-        app:layout_constraintStart_toStartOf="@+id/filter_challenge_posts_title"
-        app:layout_constraintBottom_toTopOf="@+id/by_completed_challenges"/>
+        <CheckBox
+            android:id="@+id/by_accepted_challenges"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/accepted_challenges"
+            app:layout_constraintTop_toBottomOf="@+id/by_opened_challenges"
+            app:layout_constraintStart_toStartOf="@+id/filter_challenge_posts_title"
+            app:layout_constraintBottom_toTopOf="@+id/by_completed_challenges"/>
 
-    <CheckBox
-        android:id="@+id/by_completed_challenges"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/completed_challenges"
-        app:layout_constraintTop_toBottomOf="@+id/by_accepted_challenges"
-        app:layout_constraintStart_toStartOf="@+id/filter_challenge_posts_title"
-        app:layout_constraintBottom_toTopOf="@+id/by_accepted_challenges"/>
+        <CheckBox
+            android:id="@+id/by_completed_challenges"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/completed_challenges"
+            app:layout_constraintTop_toBottomOf="@+id/by_accepted_challenges"
+            app:layout_constraintStart_toStartOf="@+id/filter_challenge_posts_title"
+            app:layout_constraintBottom_toTopOf="@+id/by_accepted_challenges"/>
 
-    <Button
-        android:id="@+id/apply_challenge_list_filters"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/apply_filters_button"
-        android:layout_marginTop="20dp"
-        app:layout_constraintTop_toBottomOf="@+id/by_completed_challenges"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        <Button
+            android:id="@+id/apply_challenge_list_filters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/apply_filters_button"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/by_completed_challenges"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
