@@ -7,7 +7,9 @@
     android:layout_height="wrap_content"
     tools:ignore="MergeRootFrame"
     android:fillViewport="true"
-    tools:context=".ui.home.HomeFragment">
+    tools:context=".ui.home.HomeFragment"
+    android:layout_marginBottom="80dp"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -16,39 +18,145 @@
 
         <!-- Votacion para el resultado de la competencia -->
 
-        <TextView
-            android:id="@+id/home_detail_publishers_vote"
-            style="?android:attr/textAppearanceLarge"
-            android:layout_width="wrap_content"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/home_detail_votes"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_margin="16dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:visibility="gone"
-            />
+            tools:visibility="visible"
+            >
 
-        <TextView
-            android:id="@+id/home_detail_opponents_vote"
-            style="?android:attr/textAppearanceLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/home_detail_publishers_vote"
-            android:visibility="gone"
-            />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-        <TextView
-            android:id="@+id/home_detail_supervisors_vote"
-            style="?android:attr/textAppearanceLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/home_detail_opponents_vote"
-            android:visibility="gone"
-            />
+                <TextView
+                    android:id="@+id/home_detail_challenge_state_title"
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/home_detail_edit_button"
+                    android:text="@string/challenge_state"
+                    android:elevation="10sp"
+                    android:textSize="30sp"
+                    android:layout_marginTop="20sp"
+                    android:gravity="center"
+                    android:background="@color/gold"
+                    />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/home_detail_winner_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                >
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/home_detail_winner_image_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        app:cardCornerRadius="150dp"
+                        app:cardElevation="8dp"
+                        android:layout_marginBottom="20sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/home_detail_winner_username"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                    >
+                        <ImageView
+                            android:id="@+id/home_detail_winner_image"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/home_detail_publisher_section_title"
+                            tools:srcCompat="@tools:sample/avatars" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:id="@+id/home_detail_winner_title"
+                        style="?android:attr/textAppearanceLarge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toTopOf="@+id/home_detail_winner_username"
+                        app:layout_constraintStart_toEndOf="@+id/home_detail_winner_image_container"
+                        app:layout_constraintTop_toTopOf="@+id/home_detail_winner_image_container"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:text="@string/winner"
+                        />
+
+                    <TextView
+                        android:id="@+id/home_detail_winner_username"
+                        style="?android:attr/textAppearanceLarge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toTopOf="@+id/home_detail_winner_star"
+                        app:layout_constraintStart_toEndOf="@+id/home_detail_winner_image_container"
+                        app:layout_constraintTop_toBottomOf="@+id/home_detail_winner_title"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:text="Nombre Apellido"/>
+
+                    <ImageView
+                        android:id="@+id/home_detail_winner_star"
+                        android:layout_width="100sp"
+                        android:layout_height="100sp"
+                        android:src="@android:drawable/btn_star_big_on"
+                        app:layout_constraintStart_toEndOf="@+id/home_detail_winner_image_container"
+                        app:layout_constraintTop_toBottomOf="@+id/home_detail_winner_username"
+                        app:layout_constraintBottom_toBottomOf="@+id/home_detail_winner_image_container"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/home_detail_publishers_vote"
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/black"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    tools:text="Publisher Vote"/>
+
+                <TextView
+                    android:id="@+id/home_detail_opponents_vote"
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/black"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    tools:text="Opponent Vote"/>
+
+                <TextView
+                    android:id="@+id/home_detail_supervisors_vote"
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/black"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    tools:text="Supervisor Vote"
+                    />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
         <!-- Baja y modificacion de la publicacion -->
 
@@ -59,8 +167,10 @@
             android:text="@string/delete"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/home_detail_supervisors_vote"
+            app:layout_constraintTop_toBottomOf="@id/home_detail_votes"
             android:visibility="gone"
+            android:layout_marginTop="20sp"
+            tools:visibility="visible"
             />
 
         <Button
@@ -72,6 +182,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/home_detail_delete_button"
             android:visibility="gone"
+            tools:visibility="visible"
             />
 
         <!-- Informacion de la publicacion -->
@@ -79,67 +190,103 @@
         <TextView
             android:id="@+id/home_detail_discipline"
             style="?android:attr/textAppearanceLarge"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/home_detail_edit_button"
+            tools:text="Discipline"
+            android:elevation="8sp"
+            android:textSize="30sp"
+            android:layout_marginTop="20sp"
+            android:gravity="center"
+            android:background="@color/purple_700"
+            android:textColor="@color/white"
             />
 
-        <TextView
-            android:id="@+id/home_detail_date"
-            style="?android:attr/textAppearanceLarge"
-            android:layout_width="wrap_content"
+
+        <LinearLayout
+            android:id="@+id/home_detail_dates_schedule_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/home_detail_discipline"
-            />
+            android:gravity="center"
+            android:layout_marginTop="20sp"
+            >
+            <TextView
+                android:id="@+id/home_detail_date"
+                style="?android:attr/textAppearanceLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_detail_discipline"
+                tools:text="24/12/2025"
+                />
 
-        <TextView
-            android:id="@+id/home_detail_schedule"
-            style="?android:attr/textAppearanceLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/home_detail_date"
-            />
+            <TextView
+                android:id="@+id/home_detail_schedule"
+                style="?android:attr/textAppearanceLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_detail_date"
+                tools:text="18:00"
+                />
+        </LinearLayout>
 
         <org.osmdroid.views.MapView
             android:id="@+id/challenge_post_location"
             android:layout_width="match_parent"
             android:layout_height="350dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/home_detail_schedule"
-            />
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/home_detail_dates_schedule_container"
+            tools:background="@drawable/ic_launcher_background" />
 
         <!-- Retador , Publisher-->
 
         <TextView
-            android:id="@+id/home_detail_publisher"
+            android:id="@+id/home_detail_publisher_section_title"
             style="?android:attr/textAppearanceLarge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/publisher"
+            android:textSize="25sp"
+            android:elevation="8sp"
+            android:background="@color/purple_700"
+            android:textColor="@color/white"
+            android:layout_marginTop="30sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/challenge_post_location"
             />
 
-        <ImageView
-            android:id="@+id/home_detail_publisher_image"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/home_detail_publisher_image_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
+            app:cardCornerRadius="150dp"
+            app:cardElevation="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/home_detail_publisher_section_title"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/home_detail_publisher"
-            tools:srcCompat="@tools:sample/avatars" />
+            app:layout_constraintEnd_toEndOf="parent">
+            <ImageView
+                android:id="@+id/home_detail_publisher_image"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_detail_publisher_section_title"
+                tools:srcCompat="@tools:sample/avatars" />
+        </androidx.cardview.widget.CardView>
 
         <Button
             android:id="@+id/home_detail_publisher_wins_button"
@@ -148,8 +295,9 @@
             android:text="@string/complete_challenge"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/home_detail_publisher_image"
+            app:layout_constraintTop_toBottomOf="@id/home_detail_publisher_image_container"
             android:visibility="gone"
+            tools:visibility="visible"
             />
 
         <TextView
@@ -160,6 +308,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/home_detail_publisher_wins_button"
+            tools:text="Nombre Apellido"
             />
 
         <TextView
@@ -170,16 +319,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/home_detail_publisher_full_name"
+            tools:text="Puntuacion: 150"
             />
 
         <!-- Contrincante -->
 
         <TextView
-            android:id="@+id/home_detail_opponent"
+            android:id="@+id/home_detail_opponent_section_title"
             style="?android:attr/textAppearanceLarge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/opponent"
+            android:textSize="25sp"
+            android:elevation="8sp"
+            android:layout_marginTop="20dp"
+            android:background="@color/purple_700"
+            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/home_detail_publisher_score"
@@ -190,22 +345,50 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/accept_challenge"
+            android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/home_detail_opponent"
+            app:layout_constraintTop_toBottomOf="@id/home_detail_opponent_section_title"
             android:visibility="gone"
+            tools:visibility="visible"
             />
 
-        <ImageView
-            android:id="@+id/home_detail_opponent_image"
-            android:layout_width="300dp"
-            android:layout_height= "300dp"
-            android:layout_marginTop="20dp"
-            tools:srcCompat="@tools:sample/avatars"
+        <TextView
+            android:id="@+id/home_detail_opponent_vacancy"
+            style="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/home_detail_accept_challenge_button"
+            tools:text="Puesto vacante"
+            android:layout_marginTop="20sp"
+            android:text="@string/vacancy"
+            android:visibility="gone"
+            tools:visibility="visible"
             />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/home_detail_opponent_image_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="150dp"
+            app:cardElevation="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/home_detail_opponent_vacancy"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+            <ImageView
+                android:id="@+id/home_detail_opponent_image"
+                android:layout_width="300dp"
+                android:layout_height= "300dp"
+                tools:srcCompat="@tools:sample/avatars"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_detail_accept_challenge_button"
+                android:visibility="gone"
+                />
+        </androidx.cardview.widget.CardView>
 
         <Button
             android:id="@+id/home_detail_opponent_wins_button"
@@ -214,8 +397,9 @@
             android:text="@string/complete_challenge"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/home_detail_opponent_image"
+            app:layout_constraintTop_toBottomOf="@id/home_detail_opponent_image_container"
             android:visibility="gone"
+            tools:visibility="visible"
             />
 
         <TextView
@@ -226,6 +410,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/home_detail_opponent_wins_button"
+            tools:text="Nombre Apellido"
+            android:visibility="gone"
             />
 
         <TextView
@@ -236,31 +422,77 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/home_detail_opponent_full_name"
+            tools:text="Puntuacion: 150"
+            android:visibility="gone"
             />
 
         <!-- Fizcalizador -->
 
         <TextView
-            android:id="@+id/home_detail_supervisor"
+            android:id="@+id/home_detail_supervisor_section_title"
             style="?android:attr/textAppearanceLarge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30sp"
             android:text="@string/supervisor"
+            android:textSize="25sp"
+            android:elevation="8sp"
+            android:background="@color/purple_700"
+            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/home_detail_opponent_score"
             />
 
-        <ImageView
-            android:id="@+id/home_detail_supervisor_image"
-            android:layout_width="300dp"
-            android:layout_height= "300dp"
-            android:layout_marginTop="20dp"
-            tools:srcCompat="@tools:sample/avatars"
+        <Button
+            android:id="@+id/home_detail_supervise_challenge_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/supervise_challenge"
+            android:layout_marginTop="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/home_detail_supervisor"
+            app:layout_constraintTop_toBottomOf="@id/home_detail_supervisor_section_title"
+            android:visibility="gone"
+            tools:visibility="visible"
             />
+
+        <TextView
+            android:id="@+id/home_detail_supervisor_vacancy"
+            style="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/vacancy"
+            app:layout_constraintTop_toBottomOf="@id/home_detail_supervise_challenge_button"
+            tools:text="Puesto vacante"
+            android:layout_marginTop="20sp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/home_detail_supervisor_image_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="150dp"
+            app:cardElevation="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/home_detail_supervisor_vacancy"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+            <ImageView
+                android:id="@+id/home_detail_supervisor_image"
+                android:layout_width="300dp"
+                android:layout_height= "300dp"
+                tools:srcCompat="@tools:sample/avatars"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_detail_supervisor_section_title"
+                android:visibility="gone"
+                />
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/home_detail_supervisor_full_name"
@@ -269,29 +501,9 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/home_detail_supervisor_image"
-            />
-
-        <Button
-            android:id="@+id/home_detail_supervise_challenge_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/supervise_challenge"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/home_detail_supervisor_full_name"
+            app:layout_constraintTop_toBottomOf="@id/home_detail_supervisor_image_container"
+            tools:text="Nombre Apellido"
             android:visibility="gone"
-            />
-
-        <TextView
-            android:id="@+id/home_detal_empty_space"
-            style="?android:attr/textAppearanceLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/home_detail_supervise_challenge_button"
-            android:layout_marginTop="40dp"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -110,13 +110,10 @@ class UserProfileFragment : Fragment() {
     }
 
     private fun displayUserInfo(userAccountDTO: UserAccountDTO) {
-        val name = getString(R.string.name)
-        val surname = getString(R.string.surname)
         val totalPoints = userAccountDTO.challengesAmount * userAccountDTO.accumulatedScore
 
-        binding.userNameTextView.text = getString(R.string.concatenate_two_string, name, surname)
-        //binding.disciplineTextView.text = getString(R.string.discipline_label, userAccountDTO.discipline)
-        binding.pointsTextView.text = getString(R.string.score_label, totalPoints.toString())
+        binding.userNameTextView.text = getString(R.string.concatenate_two_string, userAccountDTO.name, userAccountDTO.surname)
+        binding.scoreTextView.text = getString(R.string.score_label, userAccountDTO.accumulatedScore.toString())
         renderProfileImage()
     }
 

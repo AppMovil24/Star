@@ -61,6 +61,7 @@ public class ChallengePostRepository() {
                         opponentsVote = document.getString("opponentsVote"),
                         publisherVote = document.getString("publisherVote"),
                         supervisorVote = document.getString("supervisorVote"),
+                        image = document.getString("image"),
                     ))
                 }
             }
