@@ -68,6 +68,7 @@
     <string name="change_language">Change language</string>
     <string name="english">English</string>
     <string name="spanish">Spanish</string>
+    <string name="french">French</string>
     <string name="logout">Logout</string>
 
     <!-- HomeDetailFragment.kt -->

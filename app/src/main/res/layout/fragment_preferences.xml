@@ -58,6 +58,14 @@
             tools:layout_editor_absoluteY="428dp" />
 
         <RadioButton
+            android:id="@+id/select_french"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/french"
+            tools:layout_editor_absoluteX="83dp"
+            tools:layout_editor_absoluteY="428dp" />
+
+        <RadioButton
             android:id="@+id/select_spanish"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

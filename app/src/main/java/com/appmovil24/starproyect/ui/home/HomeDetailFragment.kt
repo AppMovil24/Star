@@ -333,17 +333,6 @@ class HomeDetailFragment : Fragment() {
                     val updateTask = challengePostRepository.update(challengePostID, challengePostDTO)
                     updateTask.addOnSuccessListener {
                         acceptRolButton.visibility = View.GONE
-
-                        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                val token = task.result
-                                MyFirebaseMessagingService.deviceToken = token
-                                MyFirebaseMessagingService().sendNotificationToUser(
-                                    MyFirebaseMessagingService.deviceToken, "exitosa", "sasas")
-
-                            }
-                        }
-
                         refreshDetail()
                         Toast.makeText(requireContext(), "Acción completada.", Toast.LENGTH_SHORT).show()
                     }.addOnFailureListener { e ->
