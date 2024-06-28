@@ -26,16 +26,6 @@ class LoginActivity : AppCompatActivity() {
             startApplication()
         else
             renderLogin()
-
-/*      val userToken = "d-tGDUaCSu6creK1oD9k1A:APA91bGkJfOzfqR0fpFpeiipzqhTEdMdx33aiO5jh00Mr1On-sdgCqAgyaTuAI2m9t1jIh8L7m8CRjysq5xb8a025BW3pQujLsv7rr9ntwmLX0oP-iKI-eqbWn17AOyaY_SCinEzBcth"
-        val title = "Título de la Notificación"
-        val message = "Mensaje de la Notificación"
-        val serverKey = "AIzaSyAQGtmXkvD8cLI-pn5XDstaH2EYl_6QmTo"
-        val senderId = "316019475338"
-
-        val fcmNotificationSender = FCMNotificationSender(userToken, title, message, serverKey, senderId)
-        fcmNotificationSender.sendNotification(this)
-*/
     }
 
     private fun renderLogin() {

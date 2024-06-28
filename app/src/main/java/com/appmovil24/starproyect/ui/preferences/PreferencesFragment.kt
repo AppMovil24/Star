@@ -35,12 +35,14 @@ class PreferencesFragment : Fragment() {
         when (currentLanguage) {
             "en" -> binding.changeLanguageButton.check(R.id.select_english)
             "es" -> binding.changeLanguageButton.check(R.id.select_spanish)
+            "fr" -> binding.changeLanguageButton.check(R.id.select_french)
             else -> binding.changeLanguageButton.check(R.id.select_english)
         }
         binding.changeLanguageButton.setOnCheckedChangeListener { group, checkedId ->
             val language = when (checkedId) {
                 R.id.select_english -> "en"
                 R.id.select_spanish -> "es"
+                R.id.select_french -> "fr"
                 else -> "en"
             }
             changeLanguage(language)
