@@ -4,63 +4,73 @@
     <string name="title_activity_main">MainActivity</string>
 
     <!-- Navigation -->
-    <string name="challenge_posts_list_menu_item">Competencias</string>
-    <string name="user_profile_menu_item">Perfil</string>
-    <string name="preferences_menu_item">Preferencias</string>
+    <string name="challenge_posts_list_menu_item">Challenges</string>
+    <string name="user_profile_menu_item">Profile</string>
+    <string name="preferences_menu_item">Preferences</string>
 
-    <!-- Autenticacion con Google -->
+    <!-- Google Authentication -->
     <string name="default_web_client_id">316019475338-3qukeonlisorgv83oltus3cg159togr6.apps.googleusercontent.com</string>
 
-    <!-- Botones ABM -->
-    <string name="edit">Editar</string>
-    <string name="delete">Eliminar</string>
-        <!-- Agregar Imagen -->
-        <string name="takePhoto">Sacar foto</string>
-        <string name="galleryImage">Galeria de fotos</string>
+    <!-- CRUD Buttons -->
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <!-- Add Image -->
+    <string name="takePhoto">Take Photo</string>
+    <string name="galleryImage">Photo Gallery</string>
 
     <!-- fragment_home_detail.xml -->
-    <string name="publisher">Retador</string>
-    <string name="opponent">Oponente</string>
-    <string name="accept_challenge">Aceptar desafio</string>
-    <string name="supervisor">Fiscalizador</string>
-    <string name="supervise_challenge">Fiscalizar desafio</string>
-    <string name="complete_challenge">Elegir a este usuario como ganador de la competencia.</string>
-    <string name="winner_by">%1$s indico que el ganador es %2$s.</string>
+    <string name="publisher">Challenger</string>
+    <string name="opponent">Opponent</string>
+    <string name="accept_challenge">Accept Challenge</string>
+    <string name="supervisor">Supervisor</string>
+    <string name="supervise_challenge">Supervise Challenge</string>
+    <string name="complete_challenge">Choose this user as the winner of the competition.</string>
+    <string name="winner_by">%1$s indicated that the winner is %2$s.</string>
 
     <!-- fragment_home_list.xml -->
-    <string name="user_profile">Perfil</string>
-    <string name="publish">Publicar</string>
-    <string name="preferences">Configuracion</string>
+    <string name="user_profile">Profile</string>
+    <string name="publish">Publish</string>
+    <string name="preferences">Settings</string>
+    <string name="challenge_state">Challenge Status</string>
+    <string name="winner">Winner</string>
+    <string name="vacancy">Vacancy</string>
 
-    <!-- Concatenar strings -->
+    <!-- Concatenate strings -->
     <string name="concatenate_two_string">%1$s %2$s</string>
 
     <!-- activity_publish_challenge_post.xml -->
-    <string name="schedule">Hora (HH:mm)</string>
-    <string name="date">Fecha (dd/MM/yyyy)</string>
-    <string name="save_challenge">Guardar Competencia</string>
+    <string name="schedule">Time (HH:mm)</string>
+    <string name="date">Date (yyyy-MM-dd)</string>
+    <string name="save_challenge">Save Challenge</string>
+
+    <!-- Dialog box -->
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
     <!-- activity_challenge_list_filter.xml -->
-    <string name="filter_challenge_posts_by">Filtrar competencias por:</string>
-    <string name="opened_challenges">Competencias abiertas</string>
-    <string name="accepted_challenges">Competencias aceptadas</string>
-    <string name="completed_challenges">Competencias completadas</string>
-    <string name="apply_filters_button">Aplicar filtors</string>
+    <string name="filter_challenge_posts_by">Filter challenges by:</string>
+    <string name="opened_challenges">Open challenges</string>
+    <string name="accepted_challenges">Accepted challenges</string>
+    <string name="completed_challenges">Completed challenges</string>
+    <string name="apply_filters_button">Apply filters</string>
 
     <!-- activity_register_user.xml -->
-    <string name="username">Nombre de Usuario</string>
-    <string name="challenger">Competidor</string>
-    <string name="surname">Apellido</string>
-    <string name="name">Nombre</string>
-    <string name="register">Registrar</string>
+    <string name="username">Username</string>
+    <string name="challenger">Challenger</string>
+    <string name="surname">Surname</string>
+    <string name="name">Name</string>
+    <string name="register">Register</string>
 
     <!-- fragment_user_profile.xml -->
-    <string name="score_label">Puntos: %1$s</string>
+    <string name="score_label">Acummulated Score: %1$s</string>
 
     <!-- fragment_preferences.xml -->
+    <string name="change_language">Change language</string>
+    <string name="english">English</string>
+    <string name="spanish">Spanish</string>
+    <string name="french">French</string>
     <string name="logout">Logout</string>
 
     <!-- HomeDetailFragment.kt -->
-    <string name="challenge_marker_title">Competencia</string>
-
+    <string name="challenge_marker_title">Challenge</string>
 </resources>

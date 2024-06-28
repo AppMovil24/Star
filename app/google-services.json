@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "316019475338",
+    "firebase_url": "https://starproyect-3176e-default-rtdb.firebaseio.com",
     "project_id": "starproyect-3176e",
     "storage_bucket": "starproyect-3176e.appspot.com"
   },
@@ -19,6 +20,14 @@
           "android_info": {
             "package_name": "com.appmovil24.starproyect",
             "certificate_hash": "0c2de2cfcd4d068efec27614ef109d5112cb7f72"
+          }
+        },
+        {
+          "client_id": "316019475338-url7ftjvqcdll5nldioegcuo6npunl7p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.appmovil24.starproyect",
+            "certificate_hash": "6c437cc1913f52816295ae76b5c2927e0ef45c0c"
           }
         },
         {

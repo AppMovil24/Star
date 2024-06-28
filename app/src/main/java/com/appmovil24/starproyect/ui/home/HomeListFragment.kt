@@ -6,6 +6,7 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.ViewCompat
@@ -19,6 +20,7 @@ import com.appmovil24.starproyect.databinding.HomeListContentBinding
 import com.appmovil24.starproyect.model.ChallengePost
 import com.appmovil24.starproyect.repository.ChallengePostRepository
 import com.google.gson.Gson
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 
 class HomeListFragment : Fragment() {
@@ -73,10 +75,6 @@ class HomeListFragment : Fragment() {
             val intent = Intent(view.context, FilterActitity::class.java)
             startActivity(intent)
         }
-        /*binding?.userProfileButton?.setOnClickListener {
-            val intent = Intent(view.context, UserProfile::class.java)
-            startActivity(intent)
-        }*/
         onResume()
     }
 
@@ -106,9 +104,11 @@ class HomeListFragment : Fragment() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = values[position]
-            var txt = holder.itemView.context.getString(
-                R.string.concatenate_two_string, item.discipline, item.date.toString())
-            holder.idView.text = "${txt} ${item.schedule}"
+            holder.discipline.text =item.discipline
+            holder.date.text =item.date
+            holder.schedule.text =item.schedule
+            Picasso.get().load(item.image).into(holder.image)
+
 //            holder.contentView.text = ""
 
             with(holder.itemView) {
@@ -133,8 +133,10 @@ class HomeListFragment : Fragment() {
 
         inner class ViewHolder(binding: HomeListContentBinding) :
             RecyclerView.ViewHolder(binding.root) {
-            val idView: TextView = binding.idText
-            val contentView: TextView = binding.content
+            val image: ImageView = binding.cardImage
+            val date: TextView = binding.cardDate
+            val discipline: TextView = binding.cardDiscipine
+            val schedule: TextView = binding.cardSchedule
         }
     }
 

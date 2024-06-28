@@ -16,6 +16,7 @@ public data class ChallengePost(
     var opponentsVote: String? = null,
     var publisherVote: String? = null,
     var supervisorVote: String? = null,
+    var image: String? = null
 )
 
 public data class ChallengePostDTO(
@@ -30,4 +31,5 @@ public data class ChallengePostDTO(
     var opponentsVote: String? = null,
     var publisherVote: String? = null,
     var supervisorVote: String? = null,
+    var image: String? = null
 )
